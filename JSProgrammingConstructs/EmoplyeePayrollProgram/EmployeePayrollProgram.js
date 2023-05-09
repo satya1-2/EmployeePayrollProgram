@@ -1,6 +1,6 @@
 console.log("welcome to payroll services");
 
-// uc5
+// uc6
 const IS_PART_TIME=1;
 const IS_FULL_TIME=2;
 const IS_NO_TIME= 0;
@@ -10,9 +10,11 @@ const WAGE_PER_HOUR=20;
 const NUMBER_OF_WORKING_DAYS=20;
 const TOTAL_WORKING_HOURS=160;
 
-function getWorkingHours(empCheck){
+function calculateDailyWage(empHrs){
+    return empHrs*WAGE_PER_HOUR;}
 
-  switch(empCheck){
+    function getWorkingHours(empCheck){
+        switch(empCheck){
         case IS_PART_TIME :
         return PART_TIME_HOURS;
         case IS_FULL_TIME :
@@ -24,14 +26,17 @@ function getWorkingHours(empCheck){
 }
   let totalEmpHrs=0;
   let totalWorkingDays=0;
+  let empDailyWageArray=new Array();
 
   while(totalEmpHrs<=TOTAL_WORKING_HOURS && totalWorkingDays<NUMBER_OF_WORKING_DAYS){
     totalWorkingDays++;
     let empCheck=Math.floor(Math.random() *10) %3;
-    totalEmpHrs+=getWorkingHours(empCheck);
+   let empHrs= getWorkingHours(empCheck);
+    totalEmpHrs+=empHrs;
+    empDailyWageArray.push(calculateDailyWage(empHrs));
   }
 
   
- let employeeWage=totalEmpHrs*WAGE_PER_HOUR;
+ let employeeWage=calculateDailyWage(totalEmpHrs);
  console.log(" total working days : " + totalWorkingDays+ " Total hours: " +totalEmpHrs + " Employee Daily Wage: " + employeeWage);
 
