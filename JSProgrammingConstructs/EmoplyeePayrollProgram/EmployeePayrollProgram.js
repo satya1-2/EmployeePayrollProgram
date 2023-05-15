@@ -11,8 +11,12 @@ const WAGE_PER_HOUR = 20;
 const NUMBER_OF_WORKING_DAYS = 20;
 const TOTAL_WORKING_HOURS = 160;
 let empWageArray = new Array();
-let empDailyMap = new Array();
+let empDailyArray = new Array();
 let empDailyWageMap = new Map();
+let EmpDailyHrMap = new Map();
+let empDailyHrsAndwageArray=new Array();
+
+
 
 function calculateDailyWage(empHrs) {
     return empHrs * WAGE_PER_HOUR;
@@ -38,10 +42,19 @@ while (totalEmpHrs <= TOTAL_WORKING_HOURS && totalWorkingDays < NUMBER_OF_WORKIN
     let empCheck = Math.floor(Math.random() * 10) % 3;
     let empHrs = getWorkingHours(empCheck);
     totalEmpHrs += empHrs;
-    empDailyWageArray.push(calculateDailyWage(empHrs));
+    empDailyWageArray.push({
+        dayNum:totalWorkingDays,
+        dailyHrs:empHrs,
+        dailyWage:calculateDailyWage(empHrs),
+            toString(){
+                return ' \nDay ' + this.dayNum + ' => working hours is' + this.dailyHrs + ' And wage earnrd ' + this.dailyWage
+            },
+            });
+    
     empDailyWageMap.set(totalWorkingDays, calculateDailyWage(empHrs));
+    EmpDailyHrMap.set(totalEmpHrs,getWorkingHours(empCheck));
 }
-
+console.log("uc10- shwing day hours work and wage:"+empDailyHrsAndwageArray)
 let employeeWage = calculateDailyWage(totalEmpHrs);
 console.log("Total Days: " + totalWorkingDays + " Total Hours: " + totalEmpHrs + " Employee Daily Wage: " + employeeWage);
 
@@ -126,4 +139,25 @@ function totalWagesMap(dailyWage) {
 }
 Array.from(empDailyWageMap.values()).map(totalWagesMap); 
 console.log(" Total Wage using Map: " + totalWageUsingMap);
+
+//UC-9
+const findTotal=(totalVal,dailyVal)=>{
+    return totalVal+dailyVal;
+}
+let count=0;
+let totalHrs=Array.from(EmpDailyHrMap.values()).reduce(findTotal,0);
+let totalSalary=empDailyWageArray.filter(dailyWage=>dailyWage>0).reduce(findTotal,0);
+console.log("UCA-: emp wage with arrow function:" + "total wage" + totalSalary+"total hrs"+totalHrs)
+
+let fullWorkingDays=new Array();
+let partWorkingDays=new Array();
+let noWorkingDays=new Array();
+EmpDailyHrMap.forEach((value,key,map)=>{
+    if(value==8) fullWorkingDays.push(key);
+    else if(value==4) partWorkingDays.push(key);
+    else noWorkingDays.push(key);
+});
+console.log("full working days :"+ fullWorkingDays);
+console.log("part working days :"+ partWorkingDays);
+console.log("no working days :"+ noWorkingDays);
 
