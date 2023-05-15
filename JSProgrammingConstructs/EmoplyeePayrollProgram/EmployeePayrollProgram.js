@@ -41,6 +41,9 @@ while (totalEmpHrs <= TOTAL_WORKING_HOURS && totalWorkingDays < NUMBER_OF_WORKIN
     totalWorkingDays++;
     let empCheck = Math.floor(Math.random() * 10) % 3;
     let empHrs = getWorkingHours(empCheck);
+
+    //UC-10
+
     totalEmpHrs += empHrs;
     empDailyWageArray.push({
         dayNum:totalWorkingDays,
@@ -54,7 +57,8 @@ while (totalEmpHrs <= TOTAL_WORKING_HOURS && totalWorkingDays < NUMBER_OF_WORKIN
     empDailyWageMap.set(totalWorkingDays, calculateDailyWage(empHrs));
     EmpDailyHrMap.set(totalEmpHrs,getWorkingHours(empCheck));
 }
-console.log("uc10- shwing day hours work and wage:"+empDailyHrsAndwageArray)
+console.log("uc10- showing day hours work and wage:"+empDailyHrsAndwageArray)
+
 let employeeWage = calculateDailyWage(totalEmpHrs);
 console.log("Total Days: " + totalWorkingDays + " Total Hours: " + totalEmpHrs + " Employee Daily Wage: " + employeeWage);
 
@@ -147,7 +151,7 @@ const findTotal=(totalVal,dailyVal)=>{
 let count=0;
 let totalHrs=Array.from(EmpDailyHrMap.values()).reduce(findTotal,0);
 let totalSalary=empDailyWageArray.filter(dailyWage=>dailyWage>0).reduce(findTotal,0);
-console.log("UCA-: emp wage with arrow function:" + "total wage" + totalSalary+"total hrs"+totalHrs)
+console.log("UC9A-: emp wage with arrow function:" + "total wage" + totalSalary+"total hrs"+totalHrs)
 
 let fullWorkingDays=new Array();
 let partWorkingDays=new Array();
@@ -157,7 +161,7 @@ EmpDailyHrMap.forEach((value,key,map)=>{
     else if(value==4) partWorkingDays.push(key);
     else noWorkingDays.push(key);
 });
-console.log("full working days :"+ fullWorkingDays);
+console.log(" UC9B-:full working days :"+ fullWorkingDays);
 console.log("part working days :"+ partWorkingDays);
 console.log("no working days :"+ noWorkingDays);
 
