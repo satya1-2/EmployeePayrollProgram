@@ -1,7 +1,6 @@
 
 console.log("Welcome to Employee Payroll Program!!");
 
-//UC7
 const IS_PART_TIME = 1;
 const IS_FULL_TIME = 2;
 const IS_NO_TIME = 0;
@@ -11,12 +10,10 @@ const WAGE_PER_HOUR = 20;
 const NUMBER_OF_WORKING_DAYS = 20;
 const TOTAL_WORKING_HOURS = 160;
 let empWageArray = new Array();
-let empDailyArray = new Array();
+let empDailyMap = new Array();
 let empDailyWageMap = new Map();
-let EmpDailyHrMap = new Map();
-let empDailyHrsAndwageArray=new Array();
-
-
+let empDailyHrMap = new Map();
+let empDailyHrsAndWageArray = new Array();
 
 function calculateDailyWage(empHrs) {
     return empHrs * WAGE_PER_HOUR;
@@ -41,23 +38,22 @@ while (totalEmpHrs <= TOTAL_WORKING_HOURS && totalWorkingDays < NUMBER_OF_WORKIN
     totalWorkingDays++;
     let empCheck = Math.floor(Math.random() * 10) % 3;
     let empHrs = getWorkingHours(empCheck);
-
-    //UC-10
-
     totalEmpHrs += empHrs;
-    empDailyWageArray.push({
-        dayNum:totalWorkingDays,
-        dailyHrs:empHrs,
-        dailyWage:calculateDailyWage(empHrs),
-            toString(){
-                return ' \nDay ' + this.dayNum + ' => working hours is' + this.dailyHrs + ' And wage earnrd ' + this.dailyWage
-            },
-            });
-    
+    empDailyWageArray.push(calculateDailyWage(empHrs));
+    empDailyHrsAndWageArray.push({
+        dayNum: totalWorkingDays,
+        dailyHrs: empHrs,
+        dailyWage: calculateDailyWage(empHrs),
+        toString() {
+            return '\nDay' + this.dayNum + ' => Working hours is ' + this.dailyHrs + 'And wage earned= ' + this.dailyWage
+
+
+        },
+    });
     empDailyWageMap.set(totalWorkingDays, calculateDailyWage(empHrs));
-    EmpDailyHrMap.set(totalEmpHrs,getWorkingHours(empCheck));
+    empDailyHrMap.set(totalEmpHrs, getWorkingHours(empCheck));
 }
-console.log("uc10- showing day hours work and wage:"+empDailyHrsAndwageArray)
+console.log("UC10- Showing Day Hour work and wage: " + empDailyHrsAndWageArray);
 
 let employeeWage = calculateDailyWage(totalEmpHrs);
 console.log("Total Days: " + totalWorkingDays + " Total Hours: " + totalEmpHrs + " Employee Daily Wage: " + employeeWage);
@@ -114,7 +110,6 @@ let allFullTimeWageArray = mapDayWithWageArray.every(isAllFullTimeWage);
 console.log("UC-7E - Check all element have full time wage: ");
 console.log(allFullTimeWageArray);
 
-
 //UC-7F
 function isAnyPartTimeWage(dailyWage) {
     return dailyWage.includes("80");
@@ -125,14 +120,14 @@ console.log(isAnyPartTimeWageArray);
 
 //UC-7G
 function totalDaysWorked(numOfDays, dailyWage) {
-    if (dailyWage > 0) {
+    if (dailyWage.includes("80") || dailyWage.includes("160")) {
         return numOfDays + 1;
     }
     return numOfDays;
 }
-let totalDaysWorkedArray = mapDayWithWageArray.reduce(totalDaysWorked);
+let totalDaysWorkedArray = mapDayWithWageArray.reduce(totalDaysWorked, 0);
 console.log("UC-7G - Number of days employee worked: ");
-console.log(totalDaysWorkedArray, 0);
+console.log(totalDaysWorkedArray);
 
 //UC8
 console.log("UC8 - Store the Day and the Daily Wage along with the Total Wage");
@@ -141,27 +136,51 @@ let totalWageUsingMap = 0;
 function totalWagesMap(dailyWage) {
     totalWageUsingMap += dailyWage;
 }
-Array.from(empDailyWageMap.values()).map(totalWagesMap); 
+Array.from(empDailyWageMap.values()).map(totalWagesMap);
 console.log(" Total Wage using Map: " + totalWageUsingMap);
 
-//UC-9
-const findTotal=(totalVal,dailyVal)=>{
-    return totalVal+dailyVal;
+//UC9
+const findTotal = (totalVal, dailyVal) => {
+    return totalVal + dailyVal;
 }
-let count=0;
-let totalHrs=Array.from(EmpDailyHrMap.values()).reduce(findTotal,0);
-let totalSalary=empDailyWageArray.filter(dailyWage=>dailyWage>0).reduce(findTotal,0);
-console.log("UC9A-: emp wage with arrow function:" + "total wage" + totalSalary+"total hrs"+totalHrs)
+let count = 0;
+let totalHrs = Array.from(empDailyHrMap.values()).reduce(findTotal, 0);
+let totalSalary = empDailyWageArray.filter(dailyWage => dailyWage > 0).reduce(findTotal, 0);
+console.log("UC9A- Emp wage with arrow function: " + " Total Wage: " + totalSalary + " Total Hours: " + totalHrs);
 
-let fullWorkingDays=new Array();
-let partWorkingDays=new Array();
-let noWorkingDays=new Array();
-EmpDailyHrMap.forEach((value,key,map)=>{
-    if(value==8) fullWorkingDays.push(key);
-    else if(value==4) partWorkingDays.push(key);
+let fullWorkingDays = new Array();
+let partWorkingDays = new Array();
+let noWorkingDays = new Array();
+empDailyHrMap.forEach((value, key, map) => {
+    if (value == 8) fullWorkingDays.push(key);
+    else if (value == 4) partWorkingDays.push(key);
     else noWorkingDays.push(key);
 });
-console.log(" UC9B-:full working days :"+ fullWorkingDays);
-console.log("part working days :"+ partWorkingDays);
-console.log("no working days :"+ noWorkingDays);
+console.log("Full Working days: " + fullWorkingDays);
+console.log("Part Working Days: " + partWorkingDays);
+console.log("No Working days: " + noWorkingDays);
+
+//UC11-A
+let totalWageEmp = empDailyHrsAndWageArray.filter(dailyHrsAndWage => dailyHrsAndWage.dailyWage > 0)
+    .reduce((totalWage, dailyHrsAndWage) => totalWage += dailyHrsAndWage.dailyWage, 0);
+
+let totalHours = empDailyHrsAndWageArray.filter(dailyHrsAndWage => dailyHrsAndWage.dailyHrs > 0)
+    .reduce((totalHours, dailyHrsAndWage) => totalHours += dailyHrsAndWage.dailyHrs, 0);
+
+console.log("UC11-A - Total hours: " + totalHours + " Total Wages: " + totalWageEmp);
+
+//UC11B
+console.log("UC11-B - Logging Full work Days:");
+empDailyHrsAndWageArray.filter(dailyHrsAndWage => dailyHrsAndWage.dailyHrs == FULL_TIME_HOURS)
+    .forEach(dailyHrsAndWage => console.log(dailyHrsAndWage.toString()));
+
+//UC11-C
+let partWorkingDaysStringArray = empDailyHrsAndWageArray.filter(empDailyHrsAndWageArray => empDailyHrsAndWageArray.dailyHrs == PART_TIME_HOURS)
+    .map(empDailyHrsAndWageArray => empDailyHrsAndWageArray.dayNum);
+console.log("UC11-C - Part working days: " + partWorkingDaysStringArray);
+
+//UC11-D
+let noWorkingDaysNum = empDailyHrsAndWageArray.filter(empDailyHrsAndWageArray => empDailyHrsAndWageArray.dailyHrs == 0)
+    .map(empDailyHrsAndWageArray => empDailyHrsAndWageArray.dayNum);
+console.log("UC11-D - No Working Days Nums: " + noWorkingDaysNum);
 
