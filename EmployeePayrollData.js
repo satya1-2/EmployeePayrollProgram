@@ -45,12 +45,12 @@ class EmployeePayrollData {
         const empDate = this.startDate === undefined ? "undefined" :
             this.startDate.toLocaleDateString("en-US", options);
 
-        return "id=" + this.id + " ,name=" + this.name + ",salary=" + this.salary + " gender=" + this.gender + ",start Date=" + empDate;
+        return "id=" + this.id + " ,name=" + this.name + ",salary=" + this.salary + " gender=" + this.gender + ",start Date=" + this.startDate;
     }
 
 }
 
-let employeePayrollData = new EmployeePayrollData(1, "Satya", 45000);
+let employeePayrollData = new EmployeePayrollData(1, "Satya", 50000);
 console.log(employeePayrollData.toString());
 employeePayrollData.id = 2;
 try {
@@ -63,5 +63,5 @@ try {
 
 employeePayrollData.salary = 30000;
 console.log(employeePayrollData.toString());
-let newEmployeePayrollData = new EmployeePayrollData(1, "Satya", 45000, "M", new Date());
+let newEmployeePayrollData = new EmployeePayrollData(1, "Satya", 45699, "M", new Date());
 console.log(newEmployeePayrollData.toString());
